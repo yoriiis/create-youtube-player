@@ -160,7 +160,7 @@
             //Start video on poster click, and hide it
             playerPoster.addEventListener('click', function(e){
 
-                var instancePlayer = _this.players[e.target.parentNode.querySelector('.player-yt-js').getAttribute('data-yt-key')];
+                var instancePlayer = _this.players[e.currentTarget.parentNode.querySelector('.player-yt-js').getAttribute('data-yt-key')];
 
                 e.preventDefault();
 
@@ -168,7 +168,7 @@
                     _this.onCallbackPlayerClickPoster(e, instancePlayer);
                 }else{
                     instancePlayer.playVideo();
-                    e.target.style.display = 'none';
+                    e.currentTarget.style.display = 'none';
                 }
 
             });
