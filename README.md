@@ -110,7 +110,7 @@ playerYT.onCallbackPlayerReady = function(data){ };
 
 #### <a name="onCallbackPlayerStateChange"></a>On callback player state change
 
-Function called when player status changed. There is a default behavior to show poster when video is ended with `show()` jQuery method. You can change this behavior with this callback function.
+Function called when player status changed. There is a default behavior to show poster when video is ended. You can change this behavior with this callback function.
 
 ```javascript
 playerYT.onCallbackPlayerStateChange = function(state){ };
@@ -129,7 +129,7 @@ Here is the different value of `state.data`, more informations on <a href="https
 
 #### <a name="onCallbackPlayerClickPosterYT"></a>On callback player poster click
 
-Function called on poster click. `e` parameter is click event, `instancePlayer` is the instance of the player. There is a default behavior to hide poster on click with `hide()` jQuery method and to play video. You can change this behavior with this callback function.
+Function called on poster click. `e` parameter is click event, `instancePlayer` is the instance of the player. There is a default behavior to hide poster on click and to play video. You can change this behavior with this callback function.
 
 ```javascript
 playerYT.onCallbackPlayerClickPoster = function(e, instancePlayer){ };
