@@ -1,7 +1,7 @@
 /**
  *
  * Module: Youtube player js
- * @version 1.0.0
+ * @version 1.0.1
  * @author: Joris DANIEL
  * @fileoverview: Easy way to load and manage multiple Youtube player with API
  * Compatibilities : Youtube API (iframe & player)
@@ -11,9 +11,9 @@
  *
  **/
 
-(function(){
+(function() {
 
-    var PlayerYT = function( options ){
+    var PlayerYT = function(options) {
 
         this.youtubeAPIReady = false;
         this.players = [];
@@ -36,29 +36,26 @@
 
         this.options = utils.extend({}, defaultOptions, options);
 
-        this.reParse = function(selector){
+        this.reParse = function(selector) {
             this.parsePlayer(selector);
         }
 
-        if( this.options.autoLoadAPI ){
+        if (this.options.autoLoadAPI) {
             this.loadYoutubeAPI();
         }
 
     };
 
-    PlayerYT.prototype.loadYoutubeAPI = function(){
+    PlayerYT.prototype.loadYoutubeAPI = function() {
 
         var _this = this;
 
-        window.onYouTubeIframeAPIReady = function(){
+        window.onYouTubeIframeAPIReady = function() {
             _this.onYouTubeIframeAPIReadyCallback();
         }
 
-        if( this.options.autoLoadAPI ){
+        if (this.options.autoLoadAPI) {
             var urlAPI = 'https://youtube.com/' + _this.options.api;
-            if( this.autocomplete ){
-                urlAPI += '&libraries=places';
-            }
             var tag = document.createElement('script');
             tag.async = true;
             tag.type = 'text/javascript';
@@ -69,7 +66,7 @@
 
     };
 
-    PlayerYT.prototype.onYouTubeIframeAPIReadyCallback = function(){
+    PlayerYT.prototype.onYouTubeIframeAPIReadyCallback = function() {
 
         this.youtubeAPIReady = true;
 
@@ -77,38 +74,38 @@
             this.onCallbackYoutubeAPIReady();
         }
 
-        if( this.options.parsePlayer ){
+        if (this.options.parsePlayer) {
             this.parsePlayer();
         }
 
     };
 
-    PlayerYT.prototype.parsePlayer = function(selector){
+    PlayerYT.prototype.parsePlayer = function(selector) {
 
         var _this = this,
             instancePlayer = null;
 
         //Parse specific player
-        if( typeof selector !== 'undefined' ){
+        if (typeof selector !== 'undefined') {
             var selector = document.querySelectorAll(selector);
-        }else{
+        } else {
             //Parse all selector by default
             var selectorString = '.player-yt-js:not(.parsed)';
-            if( this.options.ignoreSelector !== '' ){
+            if (this.options.ignoreSelector !== '') {
                 var selectorIgnoredArray = this.options.ignoreSelector.split(',');
-                for( var j = 0, lengthIgnoreSelector = selectorIgnoredArray.length; j < lengthIgnoreSelector; j++ ){
+                for (var j = 0, lengthIgnoreSelector = selectorIgnoredArray.length; j < lengthIgnoreSelector; j++) {
                     selectorString += ':not(' + selectorIgnoredArray[j] + ')';
                 }
             }
             var selector = document.querySelectorAll(selectorString);
         }
 
-        for( var i = 0, lengthSelector = selector.length; i < lengthSelector; i++ ){
+        for (var i = 0, lengthSelector = selector.length; i < lengthSelector; i++) {
 
             var element = selector[i],
                 selectorId = element.querySelector('.player-js').getAttribute('id'),
                 videoId = element.querySelector('.player-js').getAttribute('data-id'),
-                playerPoster = element.parentNode.querySelector('.player-poster');
+                playerPoster = element.parentNode.querySelector('.player-poster') || false;
 
             utils.addClass('parsed', element);
 
@@ -119,33 +116,33 @@
                 width: '100%',
                 playerVars: this.options.optionsPlayer,
                 events: {
-                    'onReady': function(data){
+                    'onReady': function(data) {
                         if (typeof _this.onCallbackPlayerReady === 'function') {
                             _this.onCallbackPlayerReady(data);
                         }
                     },
-                    'onStateChange': function(state){
+                    'onStateChange': function(state) {
 
                         var currentParentIframe = state.target.getIframe().parentNode.parentNode,
                             selectorId = currentParentIframe.querySelector('.player-js').getAttribute('id'),
-                            playerPoster = currentParentIframe.querySelector('.player-poster');
+                            playerPoster = currentParentIframe.querySelector('.player-poster') || false;
 
                         //All player playing are saved in array
-                        if( state.data === 1 ){
+                        if (state.data === 1) {
                             _this.playerOnPlaying.push(selectorId);
-                        }else{
+                        } else {
                             _this.updateArrayPlayersPlaying(selectorId);
                         }
 
-                        if(!_this.options.multiplePlaying && state.data === 1){
+                        if (!_this.options.multiplePlaying && state.data === 1) {
                             _this.pauseOtherVideo(selectorId);
                         }
 
                         if (typeof _this.onCallbackPlayerStateChange === 'function') {
                             _this.onCallbackPlayerStateChange(state);
-                        }else{
-                            //On video ended, show poster video
-                            if( state.data === 0 ){
+                        } else {
+                            //On video ended, show poster video if element exist
+                            if (state.data === 0 && playerPoster !== false ) {
                                 playerPoster.style.display = 'block';
                             }
                         }
@@ -157,21 +154,23 @@
             element.setAttribute('data-yt-key', _this.players.length);
             this.players.push(instancePlayer);
 
-            //Start video on poster click, and hide it
-            playerPoster.addEventListener('click', function(e){
+            //Start video on poster click, and hide it if element exist
+            if( playerPoster !== false ){
+                playerPoster.addEventListener('click', function(e) {
 
-                var instancePlayer = _this.players[e.currentTarget.parentNode.querySelector('.player-yt-js').getAttribute('data-yt-key')];
+                    var instancePlayer = _this.players[e.currentTarget.parentNode.querySelector('.player-yt-js').getAttribute('data-yt-key')];
 
-                e.preventDefault();
+                    e.preventDefault();
 
-                if (typeof _this.onCallbackPlayerClickPoster === 'function') {
-                    _this.onCallbackPlayerClickPoster(e, instancePlayer);
-                }else{
-                    instancePlayer.playVideo();
-                    e.currentTarget.style.display = 'none';
-                }
+                    if (typeof _this.onCallbackPlayerClickPoster === 'function') {
+                        _this.onCallbackPlayerClickPoster(e, instancePlayer);
+                    } else {
+                        instancePlayer.playVideo();
+                        e.currentTarget.style.display = 'none';
+                    }
 
-            });
+                });
+            }
 
         }
 
@@ -179,10 +178,10 @@
 
 
     //If player is paused or ended, removed from array
-    PlayerYT.prototype.updateArrayPlayersPlaying = function(currentSelectorId){
+    PlayerYT.prototype.updateArrayPlayersPlaying = function(currentSelectorId) {
 
-        for( var i = 0, lengthPlayerPlaying = this.playerOnPlaying.length; i < lengthPlayerPlaying; i++ ){
-            if( this.playerOnPlaying[i] === currentSelectorId ){
+        for (var i = 0, lengthPlayerPlaying = this.playerOnPlaying.length; i < lengthPlayerPlaying; i++) {
+            if (this.playerOnPlaying[i] === currentSelectorId) {
                 this.playerOnPlaying.splice(i, 1);
             }
         }
@@ -190,12 +189,12 @@
     };
 
     //If multiplePlaying option is disabled, pause all other video before play current video
-    PlayerYT.prototype.pauseOtherVideo = function(currentSelectorId){
+    PlayerYT.prototype.pauseOtherVideo = function(currentSelectorId) {
 
-        if( this.playerOnPlaying.length > 1 ){
-            for( var i = 0, lengthPlayerPlaying = this.playerOnPlaying.length; i < lengthPlayerPlaying; i++ ){
+        if (this.playerOnPlaying.length > 1) {
+            for (var i = 0, lengthPlayerPlaying = this.playerOnPlaying.length; i < lengthPlayerPlaying; i++) {
                 //Prevent pause current player
-                if( this.playerOnPlaying[i] !== currentSelectorId ){
+                if (this.playerOnPlaying[i] !== currentSelectorId) {
                     var currentPlayerKey = document.querySelector('#' + this.playerOnPlaying[i]).parentNode.getAttribute('data-yt-key')
                     var instancePlayer = this.players[currentPlayerKey];
                     instancePlayer.pauseVideo()
@@ -207,9 +206,9 @@
 
     var utils = {
         addClass: function(className, selector) {
-            if (selector.classList){
+            if (selector.classList) {
                 selector.classList.add(className);
-            }else{
+            } else {
                 selector.className += ' ' + className;
             }
         },
@@ -219,15 +218,15 @@
             for (var i = 1; i < arguments.length; i++) {
                 var obj = arguments[i];
 
-                if (!obj){
+                if (!obj) {
                     continue;
                 }
 
                 for (var key in obj) {
                     if (obj.hasOwnProperty(key)) {
-                        if (typeof obj[key] === 'object'){
+                        if (typeof obj[key] === 'object') {
                             out[key] = this.extend(out[key], obj[key]);
-                        }else{
+                        } else {
                             out[key] = obj[key];
                         }
                     }

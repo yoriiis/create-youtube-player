@@ -1,11 +1,11 @@
-![youtube-player-js](https://img.shields.io/badge/Youtube_Player_JS-v1.0.0-000000.svg?style=flat-square)
+![youtube-player-js](https://img.shields.io/badge/Youtube_Player_JS-v1.0.1-000000.svg?style=flat-square)
 ![Youtube](https://img.shields.io/badge/Youtube_API-Player|Iframe-c51109.svg?style=flat-square)
 
 # [Youtube Player JS](http://yoriiis.github.io/youtube-player-js)
 
 Youtube player module allow you to automatically load Youtube API (iframe_api or player_api), parse DOM and start instantiation. Each player is available with a small boilerplate (poster and play button).
 
-You can managed all videos Youtube on your page with a global javascript object `PlayerYT`. It is write in vanillaJS, no needs to import jQuery.
+You can manage all videos Youtube on your page with a global javascript object `PlayerYT`. It is write in vanillaJS, no needs to import jQuery.
 
 ## Installation
 
@@ -19,7 +19,7 @@ Call youtube player module in your HTML before your application and use it.
 
 ### HTML structure
 
-Use HTML structure below without change. Replace just `{{idSelector}}` with a unique id and `{{urlVideo}}` with the url of the video. Integration in .player-poster tag can be easily modified.<br />
+Use HTML structure below without change. Replace just `{{idSelector}}` with a unique id and `{{idVideo}}` with the video id from the URL. Tag `.player-poster` is optional and integration inside can be easily modified.<br />
 _For information, all player must have a unique id._
 
 ```html
