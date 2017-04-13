@@ -1,7 +1,7 @@
 /**
  *
  * Module: Youtube player js
- * @version 1.0.1
+ * @version 1.0.2
  * @author: Joris DANIEL
  * @fileoverview: Easy way to load and manage multiple Youtube player with API
  * Compatibilities : Youtube API (iframe & player)
@@ -30,8 +30,10 @@
                 'modestbranding': 0,
                 'autohide': 0,
                 'rel': 0,
-                'wmode': 'transparent'
-            }
+                'wmode': 'transparent',
+                'controls': 1
+            },
+            events: {}
         };
 
         this.options = utils.extend({}, defaultOptions, options);
@@ -70,8 +72,8 @@
 
         this.youtubeAPIReady = true;
 
-        if (typeof this.onCallbackYoutubeAPIReady === 'function') {
-            this.onCallbackYoutubeAPIReady();
+        if (typeof this.options.events.onYoutubeAPIReady === 'function') {
+            this.options.events.onYoutubeAPIReady();
         }
 
         if (this.options.parsePlayer) {
@@ -117,8 +119,8 @@
                 playerVars: this.options.optionsPlayer,
                 events: {
                     'onReady': function(data) {
-                        if (typeof _this.onCallbackPlayerReady === 'function') {
-                            _this.onCallbackPlayerReady(data);
+                        if (typeof _this.options.events.onPlayerReady === 'function') {
+                            _this.options.events.onPlayerReady(data);
                         }
                     },
                     'onStateChange': function(state) {
@@ -138,8 +140,8 @@
                             _this.pauseOtherVideo(selectorId);
                         }
 
-                        if (typeof _this.onCallbackPlayerStateChange === 'function') {
-                            _this.onCallbackPlayerStateChange(state);
+                        if (typeof _this.options.events.onStateChange === 'function') {
+                            _this.options.events.onStateChange(state);
                         } else {
                             //On video ended, show poster video if element exist
                             if (state.data === 0 && playerPoster !== false ) {
@@ -162,8 +164,8 @@
 
                     e.preventDefault();
 
-                    if (typeof _this.onCallbackPlayerClickPoster === 'function') {
-                        _this.onCallbackPlayerClickPoster(e, instancePlayer);
+                    if (typeof _this.options.events.onPosterClick === 'function') {
+                        _this.options.events.onPosterClick(e, instancePlayer);
                     } else {
                         instancePlayer.playVideo();
                         e.currentTarget.style.display = 'none';

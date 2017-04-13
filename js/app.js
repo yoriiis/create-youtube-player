@@ -11,7 +11,8 @@
             'modestbranding': 0,
             'autohide': 0,
             'rel': 0,
-            'wmode': 'transparent'
+            'wmode': 'transparent',
+            'controls': 1
         }
     });
 
