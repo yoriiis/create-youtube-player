@@ -1,4 +1,4 @@
-![youtube-player-js](https://img.shields.io/badge/Youtube_Player_JS-v1.0.1-000000.svg?style=flat-square)
+![youtube-player-js](https://img.shields.io/badge/Youtube_Player_JS-v1.0.2-000000.svg?style=flat-square)
 ![Youtube](https://img.shields.io/badge/Youtube_API-Player|Iframe-c51109.svg?style=flat-square)
 
 # [Youtube Player JS](http://yoriiis.github.io/youtube-player-js)
@@ -15,7 +15,7 @@ Call youtube player module in your HTML before your application and use it.
 <script src="js/youtube-player.js"></script>
 ```
 
-## How it work
+## How it works
 
 ### HTML structure
 
@@ -54,7 +54,8 @@ var playerYT = new PlayerYT({
         'modestbranding': 0,
         'autohide': 0,
         'rel': 0,
-        'wmode': 'transparent'
+        'wmode': 'transparent',
+        'controls': 1
     }
 });
 ```
@@ -83,37 +84,61 @@ This method accept one parameter, a string with selector class or id to parse sp
 playerYT.reParse('.player-yt-js');
 ```
 
-### Callback functions
+### Events
 
-There are multiple callback available with module player. If callback exist, default behavior is overrided.
+There are events available with module player. If event functions exist, default behavior is overrided.
 
-* [`onCallbackYoutubeAPIReady`](#onCallbackYoutubeAPIReady)
-* [`onCallbackPlayerReady`](#onCallbackPlayerYTReady)
-* [`onCallbackPlayerStateChange`](#onCallbackPlayerStateChange)
-* [`onCallbackPlayerClickPoster`](#onCallbackPlayerClickPosterYT)
-
-#### <a name="onCallbackYoutubeAPIReady"></a>On callback youtube API ready
-
-Function called when Youtube API call window.onYouTubeIframeAPIReady
+* [`onYoutubeAPIReady`](#onYoutubeAPIReady) - Event on Youtube API ready
+* [`onPlayerReady`](#onPlayerReady) - Event on Youtube player ready
+* [`onStateChange`](#onStateChange) - Event on player state changed
+* [`onPosterClick`](#onPosterClick) - Event on player poster click
 
 ```javascript
-playerYT.onCallbackYoutubeAPIReady = function(){ };
+var playerYT = new PlayerYT({
+    api: 'iframe_api',
+    autoLoadAPI: true,
+    parsePlayer: true,
+    ignoreSelector: '',
+    multiplePlaying: true,
+    optionsPlayer: {
+        'showinfo': 0,
+        'modestbranding': 0,
+        'autohide': 0,
+        'rel': 0,
+        'wmode': 'transparent',
+        'controls': 1
+    },
+    events: {
+        onYoutubeAPIReady: onYoutubeAPIReady,
+        onPlayerReady: onPlayerReady,
+        onStateChange: onPlayerStateChange,
+        onPosterClick: onPosterClick
+    }
+});
 ```
 
-#### <a name="onCallbackPlayerYTReady"></a>On callback player ready
+#### <a name="onYoutubeAPIReady"></a>On Youtube API ready
 
-Function called when every player is ready and instanciated. `data` parameter is player instance.
+Function called when Youtube API call window.onYouTubeIframeAPIReady function.
 
 ```javascript
-playerYT.onCallbackPlayerReady = function(data){ };
+function onYoutubeAPIReady(){ }
 ```
 
-#### <a name="onCallbackPlayerStateChange"></a>On callback player state change
+#### <a name="onPlayerReady"></a>On Youtube player ready
 
-Function called when player status changed. There is a default behavior to show poster when video is ended. You can change this behavior with this callback function.
+Function called when each player is ready and instanciated. `player` parameter is player instance.
 
 ```javascript
-playerYT.onCallbackPlayerStateChange = function(state){ };
+function onPlayerReady(player){ }
+```
+
+#### <a name="onStateChange"></a>On player state change
+
+Function called when player status changed. There is a default behavior to show poster when video is ended. You can change this behavior with this event function.
+
+```javascript
+function onPlayerStateChange(state){ }
 ```
 
 Here is the different value of `state.data`, more informations on <a href="https://developers.google.com/youtube/iframe_api_reference" title="Youtube API documentation" target="_blank">Youtube API documentation</a>.
@@ -127,10 +152,10 @@ Here is the different value of `state.data`, more informations on <a href="https
 | 3            | buffering     |
 | 5            | queued        |
 
-#### <a name="onCallbackPlayerClickPosterYT"></a>On callback player poster click
+#### <a name="onPosterClick"></a>On player poster click
 
-Function called on poster click. `e` parameter is click event, `instancePlayer` is the instance of the player. There is a default behavior to hide poster on click and to play video. You can change this behavior with this callback function.
+Function called on poster click. `e` parameter is click event, `instancePlayer` is the instance of the player. There is a default behavior to player the video and hide the poster. You can change this behavior with this event function.
 
 ```javascript
-playerYT.onCallbackPlayerClickPoster = function(e, instancePlayer){ };
+function onPosterClick(e, player){ }
 ```
