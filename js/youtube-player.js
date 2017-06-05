@@ -1,7 +1,7 @@
 /**
  *
  * Module: Youtube player js
- * @version 1.0.2
+ * @version 1.0.3
  * @author: Joris DANIEL
  * @fileoverview: Easy way to load and manage multiple Youtube player with API
  * Compatibilities : Youtube API (iframe & player)
@@ -18,6 +18,7 @@
         this.youtubeAPIReady = false;
         this.players = [];
         this.playerOnPlaying = [];
+        this.expando = 'youtube_' + (new Date()).getTime();
 
         var defaultOptions = {
             api: 'iframe_api',
@@ -106,7 +107,7 @@
 
             var element = selector[i],
                 selectorId = element.querySelector('.player-js').getAttribute('id'),
-                videoId = element.querySelector('.player-js').getAttribute('data-id'),
+                videoId = element.querySelector('.player-js').getAttribute('data-youtube-id'),
                 playerPoster = element.parentNode.querySelector('.player-poster') || false;
 
             utils.addClass('parsed', element);
@@ -153,14 +154,14 @@
                 }
             });
 
-            element.setAttribute('data-yt-key', _this.players.length);
+            element[this.expando] = _this.players.length;
             this.players.push(instancePlayer);
 
             //Start video on poster click, and hide it if element exist
             if( playerPoster !== false ){
                 playerPoster.addEventListener('click', function(e) {
 
-                    var instancePlayer = _this.players[e.currentTarget.parentNode.querySelector('.player-yt-js').getAttribute('data-yt-key')];
+                    var instancePlayer = _this.players[e.currentTarget.parentNode.querySelector('.player-yt-js')[_this.expando]];
 
                     e.preventDefault();
 
@@ -197,7 +198,7 @@
             for (var i = 0, lengthPlayerPlaying = this.playerOnPlaying.length; i < lengthPlayerPlaying; i++) {
                 //Prevent pause current player
                 if (this.playerOnPlaying[i] !== currentSelectorId) {
-                    var currentPlayerKey = document.querySelector('#' + this.playerOnPlaying[i]).parentNode.getAttribute('data-yt-key')
+                    var currentPlayerKey = document.querySelector('#' + this.playerOnPlaying[i]).parentNode[this.expando];
                     var instancePlayer = this.players[currentPlayerKey];
                     instancePlayer.pauseVideo()
                 }

@@ -1,4 +1,4 @@
-![youtube-player-js](https://img.shields.io/badge/Youtube_Player_JS-v1.0.2-000000.svg?style=flat-square)
+![youtube-player-js](https://img.shields.io/badge/Youtube_Player_JS-v1.0.3-000000.svg?style=flat-square)
 ![Youtube](https://img.shields.io/badge/Youtube_API-Player|Iframe-c51109.svg?style=flat-square)
 
 # [Youtube Player JS](http://yoriiis.github.io/youtube-player-js)
@@ -25,7 +25,7 @@ _For information, all player must have a unique id._
 ```html
 <div class="container-player">
   <div class="player-yt-js">
-    <div id="player-youtube-{{idSelector}}" class="player-js" data-id="{{idVideo}}"></div>
+    <div id="player-youtube-{{idSelector}}" class="player-js" data-youtube-id="{{idVideo}}"></div>
   </div>
   <div class="player-poster"></div>
 </div>
