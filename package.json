@@ -1,0 +1,40 @@
+{
+  "name": "create-youtube-player",
+  "version": "2.0.0",
+  "description": "Easy way to load and manage multiple Youtube players with API",
+  "author": "Yoriiis aka Joris DANIEL",
+  "license": "MIT",
+  "main": "./dist/youtube-player.min.js",
+  "scripts": {
+    "build": "mkdir -p dist && npx babel ./src/youtube-player.js --out-file ./dist/youtube-player.js && uglifyjs ./dist/youtube-player.js --compress --mangle --output ./dist/youtube-player.min.js"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.4.4",
+    "@babel/core": "7.4.4",
+    "@babel/preset-env": "7.4.4",
+    "babel-plugin-add-module-exports": "1.0.2",
+    "uglify-es": "3.3.9"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yoriiis/create-youtube-player.git"
+  },
+  "keywords": [
+    "youtube",
+    "youtube api",
+    "iframe",
+    "player",
+    "api",
+    "video",
+    "simple",
+    "customizable",
+    "powerful",
+    "lightweight",
+    "no dependencies"
+  ],
+  "bugs": {
+    "url": "https://github.com/yoriiis/create-youtube-player/issues"
+  },
+  "homepage": "https://github.com/yoriiis/create-youtube-player#readme"
+}

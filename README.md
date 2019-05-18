@@ -1,106 +1,98 @@
-![youtube-player-js](https://img.shields.io/badge/Youtube_Player_JS-v1.0.3-000000.svg?style=flat-square)
-![Youtube](https://img.shields.io/badge/Youtube_API-Player|Iframe-c51109.svg?style=flat-square)
+![Create Youtube Player](https://img.shields.io/badge/Create_Youtube_Player-v2.0.0-c51109.svg?style=flat-square)
 
-# [Youtube Player JS](http://yoriiis.github.io/youtube-player-js)
+# Create Youtube Player
 
-Youtube player module allow you to automatically load Youtube API (iframe_api or player_api), parse DOM and start instantiation. Each player is available with a small boilerplate (poster and play button).
-
-You can manage all videos Youtube on your page with a global javascript object `PlayerYT`. It is write in vanillaJS, no needs to import jQuery.
+Create Youtube Player is a lightweight Javascript library to instanciate Youtube players, without any dependencies.
 
 ## Installation
 
-Call youtube player module in your HTML before your application and use it.
+The libraryis available as the `create-youtube-player` package on <a href="https://www.npmjs.com/package/create-youtube-player" title="npm create-youtube-player">npm</a>.
 
-```html
-<script src="js/youtube-player.js"></script>
 ```
+npm install create-youtube-player --save
+```
+
+## Demo
+
+Online demo is available on the <a href="https://yoriiis.github.io/create-youtube-player/" title="Create Youtube Player Github page" target="_blank">Create Youtube Player Github page</a>.
+
 
 ## How it works
 
 ### HTML structure
 
-Use HTML structure below without change. Replace just `{{idSelector}}` with a unique id and `{{idVideo}}` with the video id from the URL. Tag `.player-poster` is optional and integration inside can be easily modified.<br />
-_For information, all player must have a unique id._
+The minimalist HTML structure below is enough to create the Youtube player.
+
+Replace the `{{idVideo}}` with the video id from the Youtube url. For example, `idVideo` is equal to `uXLbQrK6cXw` in the address below: `https://www.youtube.com/watch?v=uXLbQrK6cXw`
 
 ```html
-<div class="container-player">
-  <div class="player-yt-js">
-    <div id="player-youtube-{{idSelector}}" class="player-js" data-youtube-id="{{idVideo}}"></div>
-  </div>
-  <div class="player-poster"></div>
+<div class="player-1" data-youtube-id="{{idVideo}}"></div>
+```
+
+### Basic usage
+
+Every page that contains a player, has to instanciates them. The following example create one item.
+
+```javascript
+import PlayerYT from 'youtube-player.js'
+const playerYT = new PlayerYT();
+playerYT.loadAPI(() => {
+    playerYT.create({
+        element: document.querySelector('.player')
+    });
+});
+```
+
+### Custom theme
+
+To customize the player with a poster, add a div tag inside the `data-youtube-id` element.
+
+```html
+<div class="player-1" data-youtube-id="{{idVideo}}">
+    <div class="player-poster">
+      <img src="" alt="" />
+    </div>
 </div>
 ```
 
 ### Options
 
-* `api` iframe_api or player_api
-* `autoLoadAPI` automatically load Youtube API
-* `parsePlayer` automatically parse all Youtube players in the page
-* `ignoreSelector` ignore specific player (string selector class or id)
-* `multiplePlaying` disable multiple player Youtube playing in the same time
-* `optionsPlayer` player parameters pass to Youtube API (`playerVars` object)
-
-### Instanciation
+You can pass configuration options to the constructor. Example below show all default values. Allowed values are as follows:
 
 ```javascript
-var playerYT = new PlayerYT({
-    api: 'iframe_api',
-    autoLoadAPI: true,
-    parsePlayer: true,
-    ignoreSelector: '',
-    multiplePlaying: true,
-    optionsPlayer: {
-        'showinfo': 0,
-        'modestbranding': 0,
-        'autohide': 0,
-        'rel': 0,
-        'wmode': 'transparent',
-        'controls': 1
-    }
+{
+    multiplePlaying: true
+}
+```
+
+* `multiplePlaying` - {Boolean} - Disable multiple player Youtube playing in the same time
+
+## Available methods
+
+Each player instanciations returns the instance of the class with somes available methods to easily manipulate the element.
+
+### Create the player
+
+The `create()` function create the Youtube player. __The function need before to use the Youtube API.__
+
+If the Youtube API is already available, you can call the function directly. Else, call the `create()` function inside the `loadAPI()` callback function.
+
+```javascript
+playerYT.create({
+    element: document.querySelector('.player')
 });
 ```
 
-### Load Youtube API
+#### Options
 
-If `autoLoadAPI` option is disabled, you must load Youtube API on your side.<br />On `onYouTubeIframeAPIReady` Youtube event, use `playerYT.reParse()` to parse all your Youtube player.
-
-```javascript
-window.onYouTubeIframeAPIReady = function(){
-    playerYT.reParse();
-};
-```
-
-### Parsing DOM
-
-On module player init, with `parsePlayer` enabled, CSS class are added to every Youtube player parsed. You can re-parse the DOM with `playerYT.reParse()`.
+You can pass configuration options to the `create()` function. Example below show all default values. Allowed values are as follows:
 
 ```javascript
-playerYT.reParse();
-```
-
-This method accept one parameter, a string with selector class or id to parse specific player on your page.
-
-```javascript
-playerYT.reParse('.player-yt-js');
-```
-
-### Events
-
-There are events available with module player. If event functions exist, default behavior is overrided.
-
-* [`onYoutubeAPIReady`](#onYoutubeAPIReady) - Event on Youtube API ready
-* [`onPlayerReady`](#onPlayerReady) - Event on Youtube player ready
-* [`onStateChange`](#onStateChange) - Event on player state changed
-* [`onPosterClick`](#onPosterClick) - Event on player poster click
-
-```javascript
-var playerYT = new PlayerYT({
-    api: 'iframe_api',
-    autoLoadAPI: true,
-    parsePlayer: true,
-    ignoreSelector: '',
-    multiplePlaying: true,
-    optionsPlayer: {
+{
+    element: null,
+    width: '100%',
+    height: '100%',
+    playerVars: {
         'showinfo': 0,
         'modestbranding': 0,
         'autohide': 0,
@@ -108,40 +100,72 @@ var playerYT = new PlayerYT({
         'wmode': 'transparent',
         'controls': 1
     },
+    selectors: {
+        posterWrapper: '.player-poster'
+    }
+}
+```
+
+* `element` - {Object} - DOM element reference
+* `width` - {String} - Width of the player (with unity)
+* `height` - {String} - Height of the player (with unity)
+* `playerVars` - {Object} - Parameters of the Youtube player
+* `selectors` - {Object} - Configuration of selectors used by the library
+    * `posterWrapper` - {String} - Selector of the poster wrapper
+
+More informations about player parameters in the <a href="https://developers.google.com/youtube/player_parameters?hl=fr#Parameters" title="Youtube API documentation" target="_blank">Youtube API documentation</a>.
+
+### Load Youtube API
+
+The `loadAPI()` function load the Youtube API.
+
+```javascript
+playerYT.loadAPI(() => {
+    // Youtube API is ready
+});
+```
+
+## Callback functions
+
+There are callbacks function available with the library.
+
+### Youtube player ready
+
+The `onPlayerReady` function is called when the player is ready and instanciated.
+
+```javascript
+playerYT.create({
+    element: document.querySelector('.player'),
     events: {
-        onYoutubeAPIReady: onYoutubeAPIReady,
-        onPlayerReady: onPlayerReady,
-        onStateChange: onPlayerStateChange,
-        onPosterClick: onPosterClick
+        onPlayerReady: (player) => {
+            // Youtube player is ready
+        }
     }
 });
 ```
 
-#### <a name="onYoutubeAPIReady"></a>On Youtube API ready
+Parameters:
+* `player` - {Object} - Youtube player instance
 
-Function called when Youtube API call window.onYouTubeIframeAPIReady function.
+### Youtube player state change
 
-```javascript
-function onYoutubeAPIReady(){ }
-```
-
-#### <a name="onPlayerReady"></a>On Youtube player ready
-
-Function called when each player is ready and instanciated. `player` parameter is player instance.
+The `onPlayerStateChange` function is called when the player status changed.
 
 ```javascript
-function onPlayerReady(player){ }
+playerYT.create({
+    element: document.querySelector('.player'),
+    events: {
+        onPlayerStateChange: (state) => {
+            // Youtube player state changed
+        }
+    }
+});
 ```
 
-#### <a name="onStateChange"></a>On player state change
+Parameters:
+* `state` - {Object} - Youtube player state
 
-Function called when player status changed. There is a default behavior to show poster when video is ended. You can change this behavior with this event function.
-
-```javascript
-function onPlayerStateChange(state){ }
-```
-
-Here is the different value of `state.data`, more informations on <a href="https://developers.google.com/youtube/iframe_api_reference" title="Youtube API documentation" target="_blank">Youtube API documentation</a>.
+Possible values of the `state`:
 
 | Value        | Status        |
 | ------------ | ------------- |
@@ -152,10 +176,26 @@ Here is the different value of `state.data`, more informations on <a href="https
 | 3            | buffering     |
 | 5            | queued        |
 
-#### <a name="onPosterClick"></a>On player poster click
+More informations in the <a href="https://developers.google.com/youtube/iframe_api_reference" title="Youtube API documentation" target="_blank">Youtube API documentation</a>.
 
-Function called on poster click. `e` parameter is click event, `instancePlayer` is the instance of the player. There is a default behavior to player the video and hide the poster. You can change this behavior with this event function.
+### Player poster click
+
+The `onPosterClick` function is called when the poster is clicked. There is a default behavior to play the video and hide the poster.
+Declaring this function will disable the default behavior.
 
 ```javascript
-function onPosterClick(e, player){ }
+playerYT.create({
+    element: document.querySelector('.player'),
+    events: {
+        onPosterClick: (e, player) => {
+            // Poster is clicked
+            e.target.style.display = 'none';
+            player.playVideo();
+        }
+    }
+});
 ```
+
+Parameters:
+* `e` - {Object} - Event listener datas
+* `player` - {Object} - Youtube player instance
