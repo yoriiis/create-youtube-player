@@ -7,6 +7,19 @@
     position: relative;
     font-family: arial, helvetica, sans-serif;
 }
+.container-player [data-youtube-id]{
+    position: relative;
+    padding-top: 56.25%;
+    height: 0;
+    overflow: hidden;
+}
+.container-player .yt-iframe{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
 .container-player .player-poster{
     position: absolute;
     top: 0;
@@ -18,31 +31,19 @@
     z-index: 1;
 }
 .container-player .player-poster:before{
+    box-sizing: border-box;
     content: 'Play';
     text-align: center;
-    text-transform: uppercase;
     font-size: 12px;
     font-weight: bold;
     display: block;
     width: 50px;
-    height: 32px;
+    height: 50px;
     background-color: #fff;
     position: absolute;
     top: 50%;
     left: 50%;
     padding-top: 18px;
-    margin-top: -25px;
-    margin-left: -25px;
-
-}
-.container-player .player-yt-js{
-    position: relative;
-    padding-top: 56.25%;
-}
-.container-player  .player-yt-js .player-js{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
 }
