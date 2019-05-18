@@ -1,4 +1,4 @@
-import youtubePlayer from '../dist/youtube-player.js'
+import YoutubePlayer from './youtube-player.js'
 const youtubePlayer = new YoutubePlayer({
 	multiplePlaying: false
 });
