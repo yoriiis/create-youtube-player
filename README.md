@@ -26,7 +26,7 @@ The minimalist HTML structure below is enough to create the Youtube player.
 Replace the `{{idVideo}}` with the video id from the Youtube url.<br />For example, `idVideo` is equal to `uXLbQrK6cXw` in the address below: `https://www.youtube.com/watch?v=uXLbQrK6cXw`
 
 ```html
-<div class="player-1" data-youtube-id="{{idVideo}}"></div>
+<div class="player" data-youtube-id="{{idVideo}}"></div>
 ```
 
 ### Basic usage
@@ -48,7 +48,7 @@ youtubePlayer.loadAPI(() => {
 To customize the player with a poster, add a div tag inside the `data-youtube-id` element.
 
 ```html
-<div class="player-1" data-youtube-id="{{idVideo}}">
+<div class="player" data-youtube-id="{{idVideo}}">
     <div class="player-poster">
       <img src="" alt="" />
     </div>

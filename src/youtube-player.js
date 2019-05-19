@@ -4,7 +4,7 @@
  * @version 2.0.0
  * @author: Yoriiis aka Joris DANIEL <joris.daniel@gmail.com>
  * @description: Easy way to load and manage multiple Youtube players with API
- * {@link https://github.com/yoriiis/youtube-player-js}
+ * {@link https://github.com/yoriiis/create-youtube-player}
  * @copyright 2019 Joris DANIEL
  **/
 
@@ -72,9 +72,9 @@ class YoutubePlayer {
 				'wmode': 'transparent',
 				'controls': 1
 			},
-            selectors: {
-               posterWrapper: '.player-poster'
-            },
+			selectors: {
+				posterWrapper: '.player-poster'
+			},
 			events: {}
 		}, userParams || {});
 
@@ -184,4 +184,3 @@ class YoutubePlayer {
 }
 
 export default YoutubePlayer;
-// module.exports = YoutubePlayer;
