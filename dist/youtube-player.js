@@ -1,7 +1,7 @@
 /**
  * @license MIT
  * @name create-youtube-player
- * @version 2.0.0
+ * @version 2.0.1
  * @author: Yoriiis aka Joris DANIEL <joris.daniel@gmail.com>
  * @description: Easy way to load and manage multiple Youtube players with API
  * {@link https://github.com/yoriiis/create-youtube-player}
