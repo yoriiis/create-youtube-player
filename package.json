@@ -9,7 +9,7 @@
     "build": "mkdir -p dist && npx babel ./src/youtube-player.js --out-file ./dist/youtube-player.js && uglifyjs ./dist/youtube-player.js --compress --mangle --output ./dist/youtube-player.min.js"
   },
   "devDependencies": {
-    "@babel/cli": "7.5.5",
+    "@babel/cli": "7.7.7",
     "@babel/core": "7.5.5",
     "@babel/preset-env": "7.7.7",
     "babel-plugin-add-module-exports": "1.0.2",
